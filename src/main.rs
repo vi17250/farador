@@ -38,6 +38,10 @@ impl Personnage {
         }
         Err("Seul le mage peut lancer une boule de feu")
     }
+
+    fn take_weapon(&mut self) -> Option<Arme> {
+        self.arme.take()
+    }
 }
 
 fn main() {
@@ -106,5 +110,28 @@ mod test {
             Personnage::new("Gardakan".to_string(), 66, Classe::Paladin, 0, None);
         let shoot = perso.fireball();
         assert_eq!(shoot, Err("Seul le mage peut lancer une boule de feu"));
+    }
+
+    #[test]
+    fn it_returns_weapon() {
+        let mut perso: Personnage = Personnage::new(
+            "Gardakan".to_string(),
+            66,
+            Classe::Paladin,
+            0,
+            Some(Arme::Epee),
+        );
+        let taken = perso.take_weapon();
+        assert_eq!(taken, Some(Arme::Epee));
+        assert_eq!(perso.arme, None);
+    }
+
+    #[test]
+    fn it_returns_none() {
+        let mut perso: Personnage =
+            Personnage::new("Gardakan".to_string(), 66, Classe::Paladin, 0, None);
+        let taken = perso.take_weapon();
+        assert_eq!(taken, None);
+        assert_eq!(perso.arme, None);
     }
 }
