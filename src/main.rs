@@ -45,14 +45,35 @@ impl Personnage {
 }
 
 fn main() {
-    let personnage = Personnage::new(
+    let mut gardakan = Personnage::new(
         "Gardakan".to_string(),
         66,
         Classe::Paladin,
         0,
         Some(Arme::Epee),
     );
-    dbg!(personnage);
+
+    let mordak = Personnage::new(
+        "Mordak".to_string(),
+        57,
+        Classe::Archimage,
+        0,
+        Some(Arme::Baton),
+    );
+
+    let boba_fett = Personnage::new(
+        "Boba Fett".to_string(),
+        1,
+        Classe::Voleur,
+        0,
+        Some(Arme::Dague),
+    );
+
+    let _ = mordak.fireball();
+
+    if let Some(Arme::Epee) = gardakan.take_weapon() {
+        println!("gardakan vient de se faire voler son épée");
+    }
 }
 
 #[allow(warnings)]
