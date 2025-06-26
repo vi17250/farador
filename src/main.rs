@@ -1,3 +1,5 @@
+mod emplacements;
+
 #[derive(Debug, PartialEq, Eq)]
 enum Classe {
     Paladin,
@@ -61,7 +63,7 @@ fn main() {
         Some(Arme::Baton),
     );
 
-    let boba_fett = Personnage::new(
+    let _boba_fett = Personnage::new(
         "Boba Fett".to_string(),
         1,
         Classe::Voleur,
