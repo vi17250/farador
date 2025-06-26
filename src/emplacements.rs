@@ -26,6 +26,16 @@ impl Handle<Emplacement> {
         self.0.borrow_mut().liens.push(destination.clone());
         destination.clone().0.borrow_mut().liens.push(self.clone());
     }
+
+    fn next(&mut self) {
+        self.0.borrow_mut().marked = true;
+        let binding = self.0.borrow().clone();
+        let destinations = binding.liens.iter().find(|lien| !lien.0.borrow().marked);
+        match destinations {
+            Some(destination) => *self = destination.clone(),
+            None => (),
+        }
+    }
 }
 
 #[allow(warnings)]
@@ -64,5 +74,21 @@ mod test {
                 .description,
             "Source"
         );
+    }
+
+    #[test]
+    fn it_runs_through_a_link() {
+        let source = Emplacement::new("Source");
+        let destination_1 = Emplacement::new("Dest_1");
+        let destination_2 = Emplacement::new("Dest_2");
+        let mut current_position = source.clone();
+        source.link(destination_1.clone());
+        destination_1.link(destination_2);
+        current_position.next();
+        assert_eq!(source.0.borrow().marked, true);
+        assert_eq!(current_position.0.borrow().description, "Dest_1");
+        current_position.next();
+        assert_eq!(destination_1.0.borrow().marked, true);
+        assert_eq!(current_position.0.borrow().description, "Dest_2");
     }
 }
