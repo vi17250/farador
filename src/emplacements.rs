@@ -24,7 +24,7 @@ impl Emplacement {
 impl Handle<Emplacement> {
     fn link(&self, destination: Handle<Emplacement>) {
         self.0.borrow_mut().liens.push(destination.clone());
-        destination.clone().0.borrow_mut().liens.push(self.clone());
+        destination.0.borrow_mut().liens.push(self.clone());
     }
 
     fn next(&mut self) {
