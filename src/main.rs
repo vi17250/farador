@@ -53,23 +53,33 @@ fn main() {
     colline.link(coin_perdu.clone());
     coin_perdu.link(pont.clone());
 
-    fn path(sommet: Handle<Emplacement>) {
-        let name = sommet.description();
-        dbg!(name);
-        if sommet.description() == OBJECTIF {
-            println!("Objectif atteint");
-            std::process::exit(0)
-        }
-        sommet.clone().mark();
-        let cells = sommet.links();
-        for cell in cells {
-            if cell.is_marked() {
-                continue;
-            } else {
-                cell.clone().mark();
-                path(cell.clone());
-            }
+    let mut parcours: String = String::from("Parcours ");
+
+    path(village.clone(), &mut parcours);
+}
+
+fn path(sommet: Handle<Emplacement>, parcours: &mut String) {
+    let name = sommet.description();
+    if name == OBJECTIF {
+        format_path(parcours, name);
+        dbg!(parcours);
+        std::process::exit(0)
+    }
+    sommet.clone().mark();
+    let cells = sommet.links();
+    if cells.len() != 1 {
+        format_path(parcours, name);
+    }
+    for cell in cells {
+        if cell.is_marked() {
+            continue;
+        } else {
+            cell.clone().mark();
+            path(cell.clone(), parcours);
         }
     }
-    path(village.clone());
+}
+
+fn format_path(parcours: &mut String, name: &'static str) {
+    parcours.push_str(format!("> {name} ").as_str())
 }
