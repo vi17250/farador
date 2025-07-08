@@ -1,7 +1,9 @@
 mod personnages;
-use emplacements::Emplacement;
+use emplacements::{Emplacement, Handle};
 use personnages::{Arme, Classe, Personnage};
 mod emplacements;
+
+const OBJECTIF: &'static str = "Forteresse";
 
 fn main() {
     let mut gardakan = Personnage::new(
@@ -46,8 +48,28 @@ fn main() {
     village.link(foret.clone());
     village.link(colline.clone());
     foret.link(pont.clone());
+    pont.link(forteresse);
     foret.link(colline.clone());
     colline.link(coin_perdu.clone());
     coin_perdu.link(pont.clone());
-    pont.link(forteresse);
+
+    fn path(sommet: Handle<Emplacement>) {
+        let name = sommet.description();
+        dbg!(name);
+        if sommet.description() == OBJECTIF {
+            println!("Objectif atteint");
+            std::process::exit(0)
+        }
+        sommet.clone().mark();
+        let cells = sommet.links();
+        for cell in cells {
+            if cell.is_marked() {
+                continue;
+            } else {
+                cell.clone().mark();
+                path(cell.clone());
+            }
+        }
+    }
+    path(village.clone());
 }

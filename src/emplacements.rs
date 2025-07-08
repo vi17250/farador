@@ -27,6 +27,22 @@ impl Handle<Emplacement> {
         destination.0.borrow_mut().liens.push(self.clone());
     }
 
+    pub fn description(&self) -> &'static str {
+        &self.0.borrow().description
+    }
+
+    pub fn mark(&mut self) {
+        *&mut self.0.borrow_mut().marked = true;
+    }
+
+    pub fn is_marked(&self) -> bool {
+        self.0.borrow().marked
+    }
+
+    pub fn links(&self) -> Vec<Self> {
+        self.0.borrow().liens.clone()
+    }
+
     fn next(&mut self) {
         self.0.borrow_mut().marked = true;
         let binding = self.0.borrow().clone();
