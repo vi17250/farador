@@ -2,7 +2,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 #[derive(Debug, Clone, PartialEq)]
-struct Handle<T>(Rc<RefCell<T>>);
+pub struct Handle<T>(Rc<RefCell<T>>);
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Emplacement {
@@ -12,7 +12,7 @@ pub struct Emplacement {
 }
 
 impl Emplacement {
-    fn new(description: &'static str) -> Handle<Self> {
+    pub fn new(description: &'static str) -> Handle<Self> {
         Handle(Rc::new(RefCell::new(Emplacement {
             description,
             liens: vec![],
@@ -22,7 +22,7 @@ impl Emplacement {
 }
 
 impl Handle<Emplacement> {
-    fn link(&self, destination: Handle<Emplacement>) {
+    pub fn link(&self, destination: Handle<Emplacement>) {
         self.0.borrow_mut().liens.push(destination.clone());
         destination.0.borrow_mut().liens.push(self.clone());
     }
