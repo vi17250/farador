@@ -4,6 +4,7 @@ use personnages::{Arme, Classe, Personnage};
 mod emplacements;
 
 const OBJECTIF: &'static str = "Forteresse";
+const A_EVITER: &'static str = "Forêt";
 
 fn main() {
     let mut gardakan = Personnage::new(
@@ -71,6 +72,9 @@ fn path(sommet: Handle<Emplacement>, parcours: &mut String) {
         format_path(parcours, name);
     }
     for cell in cells {
+        if cell.description() == A_EVITER {
+            continue;
+        }
         if cell.is_marked() {
             continue;
         } else {
