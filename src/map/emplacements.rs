@@ -56,7 +56,7 @@ impl Handle<Emplacement> {
 
 #[allow(warnings)]
 mod test {
-    use emplacements::{Emplacement, Handle};
+    use super::*;
     use std::cell::RefCell;
     use std::rc::Rc;
 
